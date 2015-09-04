@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DA401A_Peter_Granlund</string>
+
+    <string name="action_settings">Inställningar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="first_screen_header">
+       Hej! Första skärmen här.\nOm du vill ha ett citat så tryck på knappen.
+    </string>
+    <string name="button_text">Citat</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="second_screen_header">
+        Hej Andra skärmen här.\nHär är ett citat. Det är inte speciellt bra men jag hoppas att du gillar det ändå</string>
+
+    <string-array name="not_so_epic_quotes">
+        <item>
+            Bättre en hand i skogen än tio i en fågel.
+        </item>
+        <item>
+            Nu är den kokta steken fläskt.
+        </item>
+        <item>
+            Att vara eller att inte vara så mycket... det är en fråga!?
+        </item>
+    </string-array>
+
+</resources>

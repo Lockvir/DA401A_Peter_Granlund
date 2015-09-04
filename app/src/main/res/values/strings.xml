@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DA401A_Peter_Granlund</string>
+
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="first_screen_header">Hello! First screen here.\nIf you would like to get a quote the press the button.
+    </string>
+    <string name="button_text">Quote</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="second_screen_header">Hello! Second screen here.\nHere is a quote. It\'s not very good but i hope you like it anyway.</string>
+
+    <string-array name="not_so_epic_quotes">
+        <item>
+            Better one hand in the forest than ten hands in a bird.
+        </item>
+        <item>
+            Now the boiled stake is fleshed.
+        </item>
+        <item>
+            To be or not to be so much... that is a question!?
+        </item>
+    </string-array>
+</resources>

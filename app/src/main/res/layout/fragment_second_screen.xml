@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/second_screen"
+    tools:context="petergranlund.da401a_peter_granlund.SecondScreen">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="@string/second_screen_header" />
+
+    <TextView
+        android:layout_width="248dp"
+        android:layout_height="41dp"
+        android:id="@+id/quote_field"
+        android:layout_gravity="center" />
+
+
+
+</FrameLayout>
