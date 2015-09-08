@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Assignment_1 extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements FirstScreen.OnFragmentInteractionListener
         , SecondScreen.OnFragmentInteractionListener {
 
@@ -34,7 +34,7 @@ public class Assignment_1 extends AppCompatActivity
             ft.add(R.id.not_here, new FirstScreen());
             ft.commit();
         }
-        Log.i("Assignment_1", "onCreate");
+        Log.i("MainActivity", "onCreate");
 
     }
 
