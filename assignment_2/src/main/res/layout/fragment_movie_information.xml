@@ -1,0 +1,34 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="petergranlund.assignment_2.MovieInformationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/title_and_year_movie_info_frag"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:layout_gravity="right"
+        android:textColor="@android:color/white"
+        android:background="#80000000"/>/>
+
+    <ImageView
+        android:id="@+id/picture_movie_info_frag"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:layout_gravity="left"
+        />
+
+    <TextView
+        android:id="@+id/description_movie_info_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:translationY="250dp"
+        android:scaleType="centerInside"
+        />
+</FrameLayout>
