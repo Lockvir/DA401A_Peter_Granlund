@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import petergranlund.assignment_2.AMovie;
 import petergranlund.assignment_2.MovieManager;
 import petergranlund.assignment_2.MovieRef;
 import petergranlund.assignment_2.R;
