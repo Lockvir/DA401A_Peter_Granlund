@@ -1,10 +1,8 @@
 package petergranlund.assignment_3;
 
-//import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-//import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +50,9 @@ public class AsyncAdapter extends BaseAdapter {
         return position;
     }
 
+    /** For each view in the gridview the get view is called and then the complete view is returned
+     * Using the async class ImgDownloader to keep grid fluid
+     * and let the internet dependent action take its time */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -64,8 +65,7 @@ public class AsyncAdapter extends BaseAdapter {
              */
             convertView = mInflater.inflate(R.layout.fragment_top, parent,false);
             holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.title_text);
-            holder.year = (TextView) convertView.findViewById(R.id.year_text);
+            holder.titleAndYear = (TextView) convertView.findViewById(R.id.title_text);
             holder.poster = (ImageView) convertView.findViewById(R.id.poster_img);
             holder.progress = (ProgressBar) convertView.findViewById(R.id.progress_progbar);
             convertView.setTag(holder);
@@ -77,8 +77,8 @@ public class AsyncAdapter extends BaseAdapter {
         }
 
         /** Fill up the views here. */
-        holder.title.setText(mMovieList.get(position).getTitle());
-        holder.year.setText(String.valueOf(mMovieList.get(position).getYear()));
+        holder.titleAndYear.setText(mMovieList.get(position).getTitle() +"\n"+ mMovieList.get(position).getYear());
+        holder.titleAndYear.setVisibility(View.VISIBLE);
         holder.position = position;
         new ImgDownloader(position,holder,mMovieList.get(position).getPicture()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null);
 
@@ -86,6 +86,8 @@ public class AsyncAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /** This is an inner class that is tied directly to the function of the outer class.
+     * It downloads a picture from the internet and shows a progress bar while doing it */
     private class ImgDownloader extends AsyncTask<String ,Integer, Bitmap>
     {
         private int mPosition;
@@ -97,7 +99,6 @@ public class AsyncAdapter extends BaseAdapter {
             mPosition = position;
             mHolder = holder;
             mPosterUrl = posterUrl;
-
         }
 
         @Override
@@ -147,8 +148,7 @@ public class AsyncAdapter extends BaseAdapter {
 
     private static class ViewHolder
     {
-        public TextView title;
-        public TextView year;
+        public TextView titleAndYear;
         public ImageView poster;
         public ProgressBar progress;
         public int position;

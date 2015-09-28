@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="petergranlund.assignment_3.TopFragment">
+    tools:context="petergranlund.assignment_3.TopFragment"
+    android:orientation="vertical"
+    >
 
-    <!---->
     <GridView
     android:id="@+id/movies_overview_grid"
     android:layout_width="match_parent"
@@ -16,19 +17,13 @@
     android:columnWidth="100dp"
     >
 </GridView>
-    <TextView
-        android:id="@+id/year_text"
-        android:layout_width="145dp"
-        android:layout_height="68dp"
-        android:background="#80000000"
-        android:textSize="14sp"
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        android:padding="16dp"
-        android:paddingLeft="1dp"
-        android:paddingRight="1dp"
-        android:visibility="gone"
-        />
+
+    <ImageView
+        android:id="@+id/poster_img"
+        android:layout_width="150dp"
+        android:layout_height="215dp"
+        android:padding="1dp"
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/title_text"
@@ -37,61 +32,19 @@
         android:background="#80000000"
         android:textSize="14sp"
         android:textColor="@android:color/white"
-        android:gravity="center"
+        android:layout_gravity="bottom"
         android:padding="16dp"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/poster_img"
-        android:layout_width="150dp"
-        android:layout_height="215dp"
-        android:padding="1dp"
-        android:scaleType="centerInside" />
-<!--
-<TextView
-        android:id="@+id/quotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
--->
+        android:visibility="gone"
+        />
     <ProgressBar
         android:id="@+id/progress_progbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-
-
-    <!--android:layout_width="200dp"android:id="@+id/movies_overview_grid_layout"
-        android:layout_height="200dp"
-
-    <ImageView
-        android:id="@+id/in_grid_picture"
-        android:layout_width="150dp"
-        android:layout_height="215dp"
-        android:padding="1dp"
-        android:scaleType="centerInside"
+        android:visibility="gone"
+        android:layout_gravity="center"
         />
-
-     Somehow i have an instance of this bar that is stuck ove the grid. How do i get rid of it??
-     apparently comments cannot be placed inside tags.
-
-        <TextView
-            android:id="@+id/in_grid_title_name_year"
-            android:layout_width="145dp"
-            android:layout_height="68dp"
-            android:background="#80000000"
-            android:textSize="14sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:padding="16dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:visibility="gone"
-            /> -->
-
-
 
        <!--  color and alpha follows #AARRGGBB (0-256)base10 to base16 hexadecimal, think it is like (number/16) * 10  to convert-->
 

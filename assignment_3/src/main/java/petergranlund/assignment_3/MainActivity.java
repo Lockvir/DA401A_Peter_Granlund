@@ -1,26 +1,17 @@
 package petergranlund.assignment_3;
 
-import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.net.ConnectivityManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,12 +23,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    String urlText = "https://api-v2launch.trakt.tv/movies/popular?extended=images";//"http://ip.jsontest.com/";//"https://apiv-2launch.trakt.tv/movies/popular?extended=images";
+    String urlText = "https://api-v2launch.trakt.tv/movies/popular?extended=images";
     String[] tractApiKey = {"trakt-api-key", "492a165927bfaff86b3030454939981d4e2d94c50515e15e42f41fbf57481a44"};
     String[] tractApiVerision = {"trakt-api-version", "2"};
-    //"https://api.github.com/zen?access_token=0f892e365071c7e778a020e463d715b8ccb816f5";
     private JSONArray jsonArray;
-    private JSONObject jsonObject;
     private List<Movie> movieList;
 
     private static final String TAG_TITLE = "title";
@@ -45,49 +34,25 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_IMAGE = "images";
     private static final String TAG_POSTER = "poster";
     private static final String TAG_THUMB = "thumb";
-    //private static final String TAG_YEAR = "year";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
             Log.i("MainActivity" , "onCreate");
-        //ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        /*NetworkInfo networkInfo = connMgr.getNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected())
-        {
-            //fetch data
-            //String toJSONArray =
-            */
             new PageDownloaderTask().execute(urlText);
-
-
-        //}
-       /* else
-        {
-            //display error.
-        }*/
-
-
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -98,23 +63,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class PageDownloaderTask extends AsyncTask<String, Void, String> {
 
-        ProgressDialog dialog;
-        //ProgressBar progressBar;
-
-
         @Override
         protected void onPreExecute()
         {
             super.onPreExecute();
             Log.i("MainActivity", "onPreExecute");
-        /*
-        dialog = new ProgressDialog(dialog.getContext());
-        dialog.setMessage("Loading, please wait");
-        dialog.setTitle("Connecting server");
-        dialog.show();
-        dialog.setCancelable(false);
-        //progressBar = new ProgressBar(progressBar.getContext());
-        */
         }
 
 
@@ -131,15 +84,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //textView.setText(result);
             Log.i("MainActivity" , "onPostExecute");
-            //Log.i("MainActivity", result);
 
-            /** Write the objects to check if they are correct. */
+
+            //region Write the objects to check if they are correct. and debug stuff
+            //Log.i("MainActivity", result);
             /*for (int i =0;i<movieList.size();i++)
             {
                 Log.i("jsonParse", movieList.get(i).getTitle() + "\n" + String.valueOf(movieList.get(i).getYear()) + "\n" + movieList.get(i).getPicture());
             }*/
+            //endregion
 
             TopFragment topFrag = new TopFragment();
             Bundle bundle = new Bundle();
@@ -157,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i("MainActivity" , "url : " + myUrl);
             InputStream inputStream = null;
             String toJSONArray = null;
-            // int len = 500;
 
             try{
                 URL url = new URL(myUrl);
@@ -179,15 +132,13 @@ public class MainActivity extends AppCompatActivity {
                 BufferedReader streamReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 StringBuilder responseStrBuilder = new StringBuilder();
 
-                String inputString;
+                String inputString = null;
                 while((inputString = streamReader.readLine()) != null)
                 {
                     responseStrBuilder.append(inputString);
                 }
 
                 toJSONArray = responseStrBuilder.toString();
-
-                //jsonObject = new JSONObject(toJSONArray);
 
                 if (inputStream != null)
                 {
@@ -198,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ParseJSON(toJSONArray);
 
-            } catch (Exception e /*JSONException e*/) {
+            } catch (Exception e) {
 
                 Log.i("MainActivity", "Error downloadUrl :" + e.getMessage());
                 e.printStackTrace();
