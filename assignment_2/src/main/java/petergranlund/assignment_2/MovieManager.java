@@ -6,15 +6,6 @@ import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-//import android.graphics.Movie;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +16,11 @@ public class MovieManager implements Parcelable {
 
     private List<MovieRef> mMovieListRef;
 
-    MovieManager()
+    MovieManager(Context context, int listId)
     {
         Log.i("MovieManager", "Constructer()");
         mMovieListRef = new ArrayList<MovieRef>();
+        PopulateMovies(context,listId);
     }
 
     public void PopulateMovies(Context context, int listId)
@@ -41,7 +33,12 @@ public class MovieManager implements Parcelable {
             for (int i = 0; i < movieLoadList.length() - 1; i++) {
                 int id = movieLoadList.getResourceId(i,0);
                TypedArray movie = res.obtainTypedArray(id);
-                mMovieListRef.add(new MovieRef(movie.getString(0), movie.getString(1), movie.getString(2), movie.getResourceId(3,3),movie.getResourceId(4,3)));// Had to change from storing the pictures to storing the int id for the drawables because they are to big for the phone to handle and craches the program with out of memory exception.
+                /**
+                 *                 Had to change from storing the pictures to storing the int id
+                 *                 for the drawables because they are to big for the phone to handle
+                 *                 and craches the program with out of memory exception.
+                 */
+                mMovieListRef.add(new MovieRef(movie.getString(0), movie.getString(1), movie.getString(2), movie.getResourceId(3,3),movie.getResourceId(4,3)));
                 movie.recycle();
             }
             Log.i("MovieManager", Integer.toString(mMovieListRef.size()));
@@ -80,6 +77,20 @@ public class MovieManager implements Parcelable {
         return mMovieListRef.get(index);
     }
 
+    protected MovieManager(Parcel in)
+    {
+        if(in.readByte() == 0x01)
+        {
+            mMovieListRef = new ArrayList<MovieRef>();
+            in.readList(mMovieListRef, MovieRef.class.getClassLoader());
+        }
+        else
+        {
+            mMovieListRef = null;
+        }
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -87,7 +98,15 @@ public class MovieManager implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(mMovieListRef);
+        if(mMovieListRef == null)
+        {
+            dest.writeByte((byte) (0x00));
+        }
+        else
+        {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mMovieListRef);
+        }
     }
 
     /*

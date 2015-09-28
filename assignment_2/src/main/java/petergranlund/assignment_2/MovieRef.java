@@ -50,16 +50,12 @@ public class MovieRef implements Parcelable {
 
     public MovieRef(Parcel in)
     {
-        String[] data = new String[3];
-        int[] intData = new int[2];
-
-        in.readStringArray(data);
-        this.movieTitle = data[0];
-        this.movieYear = data[1];
-        this.movieDescription = data[2];
-        in.readIntArray(intData);
-        this.moviePosterId = intData[0];
-        this.movieFanartId = intData[1];
+        this.movieTitle = in.readString();
+        this.movieTitle = in.readString();
+        this.movieYear = in.readString();
+        this.movieDescription = in.readString();
+        this.moviePosterId = in.readInt();
+        this.movieFanartId = in.readInt();
     }
 
     @Override
@@ -69,11 +65,26 @@ public class MovieRef implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(
-                new String[] {
-                        this.movieTitle
-                        , this.movieYear
-                        , this.movieDescription})};
-
+        dest.writeString(movieTitle);
+        dest.writeString(movieYear);
+        dest.writeString(movieDescription);
+        dest.writeInt(moviePosterId);
+        dest.writeInt(movieFanartId);
     }
+
+    /*
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MovieRef> CREATOR = new Parcelable().Creator<MovieRef>() {
+
+        public MovieRef createFromParcel(Parcel in)
+        {
+            return new MovieRef(in);
+        }
+
+            public MovieRef[] newArray(int size)
+        {
+            return new MovieRef[size];
+        }
+    }
+    */
 }

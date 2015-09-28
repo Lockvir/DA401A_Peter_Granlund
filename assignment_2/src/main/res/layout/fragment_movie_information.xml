@@ -6,8 +6,8 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/title_and_year_movie_info_frag"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="68dp"
         android:padding="8dp"
         android:scaleType="centerInside"
         android:layout_gravity="right"

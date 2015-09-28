@@ -8,16 +8,21 @@ import android.app.ListFragment;
  */
 public class MyFragmentListener extends ListFragment
 {
-    // THis is the object that is checed for interaction.
+    /**
+     *      This is the object that is checed for interaction.
+     */
     OnMyFragmentListener mCallback;
 
-    //This is the interface method that is to be implemented
+    /**
+     *This is the interface method that is to be implemented
+     */
     public interface OnMyFragmentListener{
-        void onArticleSelected(int position);
+        void onArticleSelected(MovieRef movie/*int position*/);
     }
 
-    //This method is supposed to force the child to implement this method. I think?
-    //Otherwise the mCallback object is never initialized and will be null!!
+    /**     This method is supposed to force the child to implement this method. I think?
+            Otherwise the mCallback object is never initialized and will be null!!
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

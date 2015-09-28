@@ -1,6 +1,7 @@
 package petergranlund.da401a_peter_granlund;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import petergranlund.assignment_2.R;
 
 /**
  * Created by Peter on 2015-09-10.
+ * Added android:largeHeap="true" in AndroidManifest.xml It no longer crashes!!!!!
  */
 public class MovieAdapter extends BaseAdapter {
 
@@ -29,29 +31,6 @@ public class MovieAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(c);
         this.mMovieManager = movieManager;
     }
-/*
-    @Override
-    public int getCount() {
-        return mMovieManager.GetSizeOfMovieList();
-    }
-
-    @Override
-    public AMovie getItem(int position) {
-        return mMovieManager.GetMovie(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-
-        return convertView;
-    }
-    */
 
     @Override
     public int getCount() {
@@ -83,7 +62,8 @@ public class MovieAdapter extends BaseAdapter {
         ImageView gridPicture = (ImageView) convertView.findViewById(R.id.in_grid_picture);
         if (gridPicture != null)
         {
-            gridPicture.setImageDrawable(convertView.getResources().getDrawable(movie.getMoviePoster()));
+            //gridPicture.setImageDrawable(convertView.getResources().getDrawable(movie.getMoviePoster()));
+            gridPicture.setImageResource(movie.getMoviePoster());
             Log.i("MovieAdapter", "getView setDrawable");
         }
 
@@ -92,7 +72,9 @@ public class MovieAdapter extends BaseAdapter {
         if(gridMovieTitleAndYear != null)
         {
             gridMovieTitleAndYear.setText(movie.getMovieTitle() + "\n" + movie.getMovieYear());
+            gridMovieTitleAndYear.setVisibility(View.VISIBLE);
             Log.i("MovieAdapter", "getView setText");
+            gridMovieTitleAndYear.setHeight(gridPicture.getBottom() - gridMovieTitleAndYear.getBottom());
         }
 
         Log.i("MovieAdapter", "getView " + position);

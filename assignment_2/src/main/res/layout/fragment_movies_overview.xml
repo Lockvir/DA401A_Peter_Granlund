@@ -1,26 +1,31 @@
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="petergranlund.assignment_2.MoviesOverviewFragment"
-    android:id="@+id/movies_overview_grid_layout"
+
     >
 
     <GridView
         android:id="@+id/movies_overview_grid"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:numColumns="auto_fit"
         android:scaleType="centerInside"
+        android:background="#ffffffff"
+        android:columnWidth="100dp"
         >
     </GridView>
 
+    <!--android:layout_width="200dp"android:id="@+id/movies_overview_grid_layout"
+        android:layout_height="200dp"
+        -->
     <ImageView
         android:id="@+id/in_grid_picture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-
-        android:padding="8dp"
+        android:layout_width="150dp"
+        android:layout_height="215dp"
+        android:padding="1dp"
         android:scaleType="centerInside"
         />
 
@@ -28,13 +33,21 @@
     <!-- apparently comments cannot be placed inside tags. -->
     <TextView
         android:id="@+id/in_grid_title_name_year"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:padding="8dp"
-        android:layout_gravity="bottom"
+        android:layout_width="145dp"
+        android:layout_height="68dp"
+        android:background="#80000000"
+        android:textSize="14sp"
         android:textColor="@android:color/white"
-        android:background="#80000000"/>
-        <!-- color and alpha follows #AARRGGBB (0-256)base10 to base16 hexadecimal, think it is like (number/16) * 10  to convert-->
+        android:gravity="center"
+        android:padding="16dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:visibility="gone"
+        />
+    <!--
+
+
+         color and alpha follows #AARRGGBB (0-256)base10 to base16 hexadecimal, think it is like (number/16) * 10  to convert-->
 
 
 </RelativeLayout>

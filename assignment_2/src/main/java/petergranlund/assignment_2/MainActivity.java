@@ -20,15 +20,19 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
         Log.i("MainActivity", "onCreate");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-
-        mMovieManager = new MovieManager(); //Not initializing object here. Still unsure about how bundles work. Otherwise this object has an array of objects.
+        /**
+         *  Not initializing object here. Still unsure about how bundles work. Otherwise this object has an array of objects.
+         */
+        mMovieManager = new MovieManager(this,R.array.movies);
         Fragment mof = new MoviesOverviewFragment();
 
-        //Creating a bundle that can be used to send objects to other fragments and activitys.
-        //Very useful when working on multiple threads.
-        //The parcelable needs extra code inside the object to work.
-        //Don't know how to send objects holding a ListArray of objects.
-        //Serializable is an alternative but it is slower. and not android specific.
+        /**
+        *   Creating a bundle that can be used to send objects to other fragments and activitys.
+        *   Very useful when working on multiple threads.
+        *   The parcelable needs extra code inside the object to work.
+        *   Don't know how to send objects holding a ListArray of objects.
+        *   Serializable is an alternative but it is slower. and not android specific.
+        */
         Bundle bundle = new Bundle();
         bundle.putParcelable("mMovieManager", mMovieManager);
         mof.setArguments(bundle);
@@ -40,7 +44,9 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
 
     }
 
-    //Auto generated.
+    /**
+     * Auto generated.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -49,12 +55,15 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
         return true;
     }
 
-    //Auto generated.
+    /**
+     * Auto generated.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
+        /** Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+         */
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -66,18 +75,19 @@ public class MainActivity extends AppCompatActivity implements MyFragmentListene
     }
 
 
-    /*
+    /**
     *   Custom made interaction listener. This listens for interaction from the fragment
     *   it is connected to. Puts the array position that it gets from the interaction
     *   that signifies the selected item and puts it in a bundle so that the other fragment
     *   will know what information to get. Then starts a new fragment that.
     * */
     @Override
-    public void onArticleSelected(int position) {
+    public void onArticleSelected(MovieRef movie/*int position*/) {
 
         Fragment mif = new MovieInformationFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("position",position);
+        //bundle.putInt("movie", movie);/*"position",position*/);
+        bundle.putParcelable("movie", movie);
         mif.setArguments(bundle);
 
     getSupportFragmentManager()
