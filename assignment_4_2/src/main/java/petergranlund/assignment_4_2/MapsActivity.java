@@ -2,7 +2,6 @@ package petergranlund.assignment_4_2;
 
 import android.location.Location;
 import android.media.MediaPlayer;
-//import android.support.v7.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -10,11 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -25,12 +20,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.util.concurrent.TimeUnit;
-
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener/*, MarkerDialogFragment.OnFragmentInteractionListener*/, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class MapsActivity
+        extends FragmentActivity
+        implements GoogleMap.OnMarkerClickListener,
+        LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LatLng home = new LatLng(47, 106);
@@ -41,7 +36,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     Location mCurrentLocation;
-    DateFormat mLastUpdateTime;
     double mDistanceToPoint = 0.0023f;
 
     @Override
@@ -54,20 +48,21 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         mVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         createLocationRequest();
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
-        //mGoogleApiClient.connect();
-        //Location here = mMap.getMyLocation();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        //mMap.addMarker(new MarkerOptions().position(home).title("Marker"));
-        //Log.i("MapActivity", String.valueOf(here.getLatitude())+ "  "+String.valueOf(here.getLongitude()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 1));
-        mapLocationObject = new MapLocationObject(55.611404, 12.995255, "Sweden", "Malmo", "Spellabbet");
+        mapLocationObject = new MapLocationObject(
+                55.611404
+                , 12.995255
+                , "Sweden"
+                , "Malmo"
+                , "Spellabbet");
         mMap.setOnMarkerClickListener(this);
         mapLocationObject.MakeMaker(mMap);
-        //mMap.clear();
-        //mapLocationObject.MakeMaker(mMap);
-        //startLocationUpdates();
-        //mMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -110,7 +105,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     protected void onStart() {
         super.onStart();
         Log.i("MapsActivity", "onStart()");
-        //if (mResolvingError)
         mGoogleApiClient.connect();
     }
 
@@ -145,11 +139,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         return true;
     }
 
-    /*@Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }*/
-
     private void PlaySound() {
         Log.i("MapsActivity", "PlaySound()");
         mMPlayer.start();
@@ -157,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     private void VibratePhone() {
         Log.i("MapsActivity", "VibratePhone()");
-        mVibrator.vibrate(500);
+        mVibrator.vibrate(mVibrationLenth);
     }
 
     protected void createLocationRequest() {
@@ -178,8 +167,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     public void onLocationChanged(Location location) {
         Log.i("MapsActivity", "onLocationChanged(Location location)");
         mCurrentLocation = location;
-        //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        //updateUI();
         if (IsCloseTo(mapLocationObject)) {
             Log.i("MapsActivity", "In the zone!!");
             mapLocationObject.MakeMaker(mMap);
@@ -194,13 +181,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     private boolean IsCloseTo(MapLocationObject locationObject) {
         Log.i("MapsActivity", "IsCloseTo(MapLocationObject locationObject)");
-        return mDistanceToPoint > Math.sqrt(Math.pow((mCurrentLocation.getLatitude() - locationObject.getmLatLng().latitude), 2) + Math.pow((mCurrentLocation.getLongitude() - locationObject.getmLatLng().longitude), 2));
+        return mDistanceToPoint > Math.sqrt(
+                Math.pow((
+                        mCurrentLocation.getLatitude()
+                        - locationObject.getmLatLng().latitude), 2)
+                        + Math.pow((mCurrentLocation.getLongitude()
+                        - locationObject.getmLatLng().longitude), 2));
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("MapsActivity", "onConnected(Bundle bundle)");
-        //createLocationRequest();
         startLocationUpdates();
     }
 
