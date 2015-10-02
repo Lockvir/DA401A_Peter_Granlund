@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -29,7 +30,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener/*, MarkerDialogFragment.OnFragmentInteractionListener*/, LocationListener , GoogleApiClient{
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener/*, MarkerDialogFragment.OnFragmentInteractionListener*/, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LatLng home = new LatLng(47, 106);
@@ -41,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     LocationRequest mLocationRequest;
     Location mCurrentLocation;
     DateFormat mLastUpdateTime;
-    double mDistanceToPoint = 0.0000f;
+    double mDistanceToPoint = 0.0023f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +50,24 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         Log.i("MapsActivity", "onCreate");
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-        mMPlayer = MediaPlayer.create(this,R.raw.sound_file);
+        mMPlayer = MediaPlayer.create(this, R.raw.sound_file);
         mVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-        //mMap.setMyLocationEnabled(true);
+
         createLocationRequest();
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+        //mGoogleApiClient.connect();
         //Location here = mMap.getMyLocation();
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        mMap.addMarker(new MarkerOptions().position(home).title("Marker"));
+        //mMap.addMarker(new MarkerOptions().position(home).title("Marker"));
         //Log.i("MapActivity", String.valueOf(here.getLatitude())+ "  "+String.valueOf(here.getLongitude()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 1));
-        mapLocationObject = new MapLocationObject(55.611404, 12.995255,"Sweden", "Malmo", "Spellabbet");
+        mapLocationObject = new MapLocationObject(55.611404, 12.995255, "Sweden", "Malmo", "Spellabbet");
         mMap.setOnMarkerClickListener(this);
         mapLocationObject.MakeMaker(mMap);
-        mMap.clear();
+        //mMap.clear();
         //mapLocationObject.MakeMaker(mMap);
-        startLocationUpdates();
+        //startLocationUpdates();
+        //mMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -102,6 +106,21 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("MapsActivity", "onStart()");
+        //if (mResolvingError)
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("MapsActivity", "onStop()");
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
@@ -131,17 +150,18 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     }*/
 
-    private void PlaySound()
-    {
+    private void PlaySound() {
+        Log.i("MapsActivity", "PlaySound()");
         mMPlayer.start();
     }
 
-    private void VibratePhone()
-    {
+    private void VibratePhone() {
+        Log.i("MapsActivity", "VibratePhone()");
         mVibrator.vibrate(500);
     }
 
     protected void createLocationRequest() {
+        Log.i("MapsActivity", "createLocationRequest()");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
@@ -149,112 +169,48 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     }
 
     protected void startLocationUpdates() {
+        Log.i("MapsActivity", "startLocationUpdates()");
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("MapsActivity", "onLocationChanged(Location location)");
         mCurrentLocation = location;
         //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         //updateUI();
-        if (IsCloseTo(mapLocationObject))
-        {
+        if (IsCloseTo(mapLocationObject)) {
+            Log.i("MapsActivity", "In the zone!!");
             mapLocationObject.MakeMaker(mMap);
-        }
-        else
-        {
+            PlaySound();
+            VibratePhone();
+        } else {
+            Log.i("MapsActivity", "Outside the zone");
             mMap.clear();
         }
     }
 
-    private boolean IsCloseTo(MapLocationObject locationObject)
-    {
-        return mDistanceToPoint > Math.sqrt(Math.pow(( mCurrentLocation.getLatitude()- locationObject.getmLatLng().latitude),2)+ Math.pow((mCurrentLocation.getLongitude()-locationObject.getmLatLng().longitude),2));
+
+    private boolean IsCloseTo(MapLocationObject locationObject) {
+        Log.i("MapsActivity", "IsCloseTo(MapLocationObject locationObject)");
+        return mDistanceToPoint > Math.sqrt(Math.pow((mCurrentLocation.getLatitude() - locationObject.getmLatLng().latitude), 2) + Math.pow((mCurrentLocation.getLongitude() - locationObject.getmLatLng().longitude), 2));
     }
 
     @Override
-    public boolean hasConnectedApi(Api<?> api) {
-        return false;
+    public void onConnected(Bundle bundle) {
+        Log.i("MapsActivity", "onConnected(Bundle bundle)");
+        //createLocationRequest();
+        startLocationUpdates();
     }
 
     @Override
-    public ConnectionResult getConnectionResult(Api<?> api) {
-        return null;
+    public void onConnectionSuspended(int i) {
+        Log.i("MapsActivity", "onConnectionSuspended(int i)");
     }
 
     @Override
-    public void connect() {
-
-    }
-
-    @Override
-    public ConnectionResult blockingConnect() {
-        return null;
-    }
-
-    @Override
-    public ConnectionResult blockingConnect(long l, TimeUnit timeUnit) {
-        return null;
-    }
-
-    @Override
-    public void disconnect() {
-
-    }
-
-    @Override
-    public void reconnect() {
-
-    }
-
-    @Override
-    public PendingResult<Status> clearDefaultAccountAndReconnect() {
-        return null;
-    }
-
-    @Override
-    public void stopAutoManage(FragmentActivity fragmentActivity) {
-
-    }
-
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
-
-    @Override
-    public boolean isConnecting() {
-        return false;
-    }
-
-    @Override
-    public void registerConnectionCallbacks(ConnectionCallbacks connectionCallbacks) {
-
-    }
-
-    @Override
-    public boolean isConnectionCallbacksRegistered(ConnectionCallbacks connectionCallbacks) {
-        return false;
-    }
-
-    @Override
-    public void unregisterConnectionCallbacks(ConnectionCallbacks connectionCallbacks) {
-
-    }
-
-    @Override
-    public void registerConnectionFailedListener(OnConnectionFailedListener onConnectionFailedListener) {
-
-    }
-
-    @Override
-    public boolean isConnectionFailedListenerRegistered(OnConnectionFailedListener onConnectionFailedListener) {
-        return false;
-    }
-
-    @Override
-    public void unregisterConnectionFailedListener(OnConnectionFailedListener onConnectionFailedListener) {
-
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("MapsActivity", "onConnectionFailed()");
     }
 }
